@@ -31,6 +31,7 @@ const PriceEncoderApp: React.FC = () => {
   const [secondEncodingChar, setSecondEncodingChar] = useState<string>("X");
   const [codeToCheck, setCodeToCheck] = useState("");
   const [decodedPrice, setDecodedPrice] = useState("");
+  const [offerProductId, setOfferProductId] = useState<string | null>(null);
 
   // loading localStorage
   useEffect(() => {
@@ -185,7 +186,8 @@ const PriceEncoderApp: React.FC = () => {
   };
 
   // ฟังก์ชันเลือกดูสินค้า
-  const selectProduct = (product: Product) => {
+  const selectProduct = (product: Product, resetBargain: boolean = true) => {
+    const currentBargainPrice = bargainPrice;
     resetForm();
     setCurrentProduct(product);
     setProductName(product.name);
@@ -196,6 +198,9 @@ const PriceEncoderApp: React.FC = () => {
     setFirstEncodingChar(product.firstEncodingChar);
     setSecondEncodingChar(product.secondEncodingChar);
     setShowProductList(false);
+    if (!resetBargain) {
+      setBargainPrice(currentBargainPrice);
+    }
   };
 
   // ฟังก์ชันลบสินค้า
@@ -271,8 +276,6 @@ const PriceEncoderApp: React.FC = () => {
           return;
         }
       }
-
-      // ถ้ารหัสไม่ซ้ำ ดำเนินการแก้ไขต่อ
       const updatedProducts = products.map((p) =>
         p.id === currentProduct.id
           ? {
@@ -292,7 +295,6 @@ const PriceEncoderApp: React.FC = () => {
       setCurrentProduct(null);
     }
 
-    // ตั้งค่าสำหรับการแสดงผล
     setFirstEncodingChar(firstChar);
     setSecondEncodingChar(secondChar);
     setEncodedPrice(encoded);
@@ -333,12 +335,9 @@ const PriceEncoderApp: React.FC = () => {
     if (bargainVal <= buyingVal) {
       return 0;
     }
-
-    // คำนวณเปอร์เซ็นต์กำไรเทียบกับกำไรเต็ม
     const maxProfit = sellingVal - buyingVal;
     const currentProfit = bargainVal - buyingVal;
     const profitPercentage = (currentProfit / maxProfit) * 100;
-
     return profitPercentage;
   };
 
@@ -645,7 +644,6 @@ const PriceEncoderApp: React.FC = () => {
                         value={bargainPrice}
                         onChange={(e) => {
                           setBargainPrice(e.target.value);
-                          // เพิ่มส่วนนี้เพื่อแสดงรหัสเมื่อกรอกตัวเลข
                           if (e.target.value) {
                             const encoded = encodePrice(
                               e.target.value,
@@ -706,7 +704,6 @@ const PriceEncoderApp: React.FC = () => {
                         value={codeToCheck}
                         onChange={(e) => {
                           setCodeToCheck(e.target.value);
-                          // เพิ่มส่วนนี้เพื่อถอดรหัสอัตโนมัติเมื่อมีการกรอกรหัส
                           if (e.target.value.length >= 2) {
                             setDecodedPrice(decodePrice(e.target.value));
                           } else {
@@ -771,11 +768,12 @@ const PriceEncoderApp: React.FC = () => {
                       <input
                         type="number"
                         value={
-                          product.id === currentProduct?.id ? bargainPrice : ""
+                          offerProductId === product.id ? bargainPrice : ""
                         }
                         onChange={(e) => {
-                          selectProduct(product);
+                          setOfferProductId(product.id);
                           setBargainPrice(e.target.value);
+                          setIsBargainAcceptable(null);
                         }}
                         className="flex-1 px-3 py-2 border rounded text-black"
                         placeholder="Your offer"
@@ -784,7 +782,10 @@ const PriceEncoderApp: React.FC = () => {
                       />
                       <button
                         onClick={() => {
-                          selectProduct(product);
+                          setOfferProductId(product.id);
+                          setCurrentProduct(product);
+                          setBuyingPrice(product.buyingPrice);
+                          setSellingPrice(product.sellingPrice);
                           checkBargain();
                         }}
                         className="px-4 py-2 bg-orange-500 text-white text-[14px] rounded hover:bg-orange-600"
