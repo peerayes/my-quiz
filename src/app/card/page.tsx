@@ -121,11 +121,15 @@ export default function CardPage() {
     setIsNextClicked(false);
   };
 
-  const startSimulation = () => {
+    const startSimulation = () => {
     setShowStep2(true);
     setIsNextClicked(true);
     setIsShufflingAnimation(true);
     setRevealedCards([]);
+
+    const shuffled = [...deck].sort((a, b) => a - b);
+    setShuffledDeck(shuffled);
+    setRemainingDeck([...shuffled]);
 
     setTimeout(() => {
       if (step2Ref.current) {
