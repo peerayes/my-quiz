@@ -232,16 +232,16 @@ export default function CardPage() {
 
             <div className="flex justify-center">
               <button
-                onClick={startSimulation}
-                disabled={isNextClicked}
-                className={`px-12 py-4 rounded-lg text-2xl ${
-                  isNextClicked
-                    ? "bg-gray-400 cursor-not-allowed text-gray-200"
-                    : "bg-blue-500 hover:bg-blue-600 text-white"
-                }`}
-              >
-                สับไพ่
-              </button>
+  onClick={startSimulation}
+  disabled={isNextClicked || error !== null}
+  className={`px-12 py-4 rounded-lg text-2xl ${
+    isNextClicked || error !== null
+      ? "bg-gray-400 cursor-not-allowed text-gray-200"
+      : "bg-blue-500 hover:bg-blue-600 text-white"
+  }`}
+>
+  สับไพ่
+</button>
             </div>
           </div>
         )}
