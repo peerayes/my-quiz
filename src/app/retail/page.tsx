@@ -31,7 +31,7 @@ const PriceEncoderApp: React.FC = () => {
   const [secondEncodingChar, setSecondEncodingChar] = useState<string>("X");
   const [codeToCheck, setCodeToCheck] = useState("");
   const [decodedPrice, setDecodedPrice] = useState("");
-  const [offerProductId, setOfferProductId] = useState<string | null>(null);
+  const [, setOfferProductId] = useState<string | null>(null);
 const [productOffers, setProductOffers] = useState<{ [key: string]: string }>(
     {}
   );
