@@ -144,7 +144,7 @@ export default function CardPage() {
     }, 2800);
   };
 
-  const simulateReveal = () => {
+    const simulateReveal = () => {
     if (isShuffling) return;
     if (revealedCards.length >= shuffledDeck.length) {
       return;
@@ -167,12 +167,6 @@ export default function CardPage() {
               setTimeout(() => {
                 setIsShufflingStep(2);
                 setTimeout(() => {
-                  if (newRemaining.length > 0) {
-                    const nextCard = newRemaining.shift();
-                    if (nextCard !== undefined) {
-                      newRemaining.push(nextCard);
-                    }
-                  }
                   setRemainingDeck(newRemaining);
                   setTimeout(() => {
                     setIsShufflingStep(0);
