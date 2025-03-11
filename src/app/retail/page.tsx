@@ -102,12 +102,21 @@ const PriceEncoderApp: React.FC = () => {
   const handleOfferSubmit = (productId: string, offerPrice: string) => {
     const product = products.find((p) => p.id === productId);
     if (product) {
+      setCurrentProduct(null);
+      setIsBargainAcceptable(null);
+      setBargainPrice("");
       setOfferProductId(productId);
       setCurrentProduct(product);
       setBuyingPrice(product.buyingPrice);
       setSellingPrice(product.sellingPrice);
       setBargainPrice(offerPrice);
-      checkBargain();
+      const buyingVal = parseFloat(product.buyingPrice);
+      const bargainVal = parseFloat(offerPrice);
+      if (isNaN(buyingVal) || isNaN(bargainVal)) {
+        setIsBargainAcceptable(null);
+      } else {
+        setIsBargainAcceptable(bargainVal >= buyingVal);
+      }
     }
   };
 
