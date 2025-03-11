@@ -85,14 +85,11 @@ const CustomerView: React.FC<CustomerViewProps> = ({
                   <button
                     type="button"
                     onClick={() => {
-                      const inputElement = document.querySelector(
-                        `input[data-product-id="${product.id}"]`
-                      ) as HTMLInputElement;
-                      const inputValue = inputElement?.value || "";
-                      const offerPrice =
-                        productOffers[product.id] || inputValue;
+                      const offerPrice = productOffers[product.id] || "";
                       if (offerPrice) {
                         onOfferSubmit(product.id, offerPrice);
+                        const updatedOffers = { [product.id]: offerPrice };
+                        setProductOffers(updatedOffers);
                       }
                     }}
                     className="absolute right-0 top-0 bottom-0 px-4 bg-orange-500 text-white text-sm font-medium rounded-r hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50 z-10"

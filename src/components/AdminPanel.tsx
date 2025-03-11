@@ -51,7 +51,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     boolean | null
   >(null);
 
-  // Function to generate random character
   const generateRandomChar = (excludeChars: string[] = []): string => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const availableChars = chars
@@ -111,7 +110,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     return decoded;
   };
 
-  // Calculate selling price
   const calculateSellingPrice = (buying: string, profit: string): string => {
     const buyingVal = parseFloat(buying);
     const profitVal = parseFloat(profit);
@@ -119,7 +117,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     return (buyingVal * (1 + profitVal / 100)).toFixed(2);
   };
 
-  // ฟังก์ชันเพิ่มสินค้าใหม่
   const addProduct = () => {
     const isDuplicatedCode = products.some(
       (p) => p.encodedPrice === encodedPrice
@@ -137,7 +134,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
         isUnique = !products.some((p) => p.encodedPrice === newEncodedPrice);
         attempts++;
       }
-
       if (isUnique) {
         setFirstEncodingChar(newFirstChar);
         setSecondEncodingChar(newSecondChar);
@@ -150,7 +146,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
         return;
       }
     }
-
     const newProduct: Product = {
       id: Date.now().toString(),
       name: productName,
@@ -161,13 +156,11 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
       firstEncodingChar,
       secondEncodingChar,
     };
-
     setProducts([...products, newProduct]);
     resetFormLocal();
     setShowProductList(true);
   };
 
-  // ฟังก์ชันรีเซ็ตฟอร์ม
   const resetFormLocal = () => {
     setProductName("");
     setBuyingPrice("");
@@ -182,7 +175,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     setDecodedPrice("");
   };
 
-  // ฟังก์ชันเลือกดูสินค้า
   const selectProduct = (product: Product, resetBargain: boolean = true) => {
     const currentBargainPrice = bargainPrice;
     resetFormLocal();
@@ -200,7 +192,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     }
   };
 
-  // ฟังก์ชันลบสินค้า
   const removeProduct = (id: string) => {
     setProducts(products.filter((p) => p.id !== id));
     if (currentProduct && currentProduct.id === id) {
