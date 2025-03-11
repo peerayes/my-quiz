@@ -32,7 +32,9 @@ const PriceEncoderApp: React.FC = () => {
   const [codeToCheck, setCodeToCheck] = useState("");
   const [decodedPrice, setDecodedPrice] = useState("");
   const [offerProductId, setOfferProductId] = useState<string | null>(null);
-
+const [productOffers, setProductOffers] = useState<{ [key: string]: string }>(
+    {}
+  );
   // loading localStorage
   useEffect(() => {
     const savedProducts = localStorage.getItem("retailcode-products");
@@ -122,7 +124,6 @@ const PriceEncoderApp: React.FC = () => {
     return (buyingVal * (1 + profitVal / 100)).toFixed(2);
   };
 
-  // ฟังก์ชันเพิ่มสินค้าใหม่
   const addProduct = () => {
     const isDuplicatedCode = products.some(
       (p) => p.encodedPrice === encodedPrice
@@ -170,7 +171,6 @@ const PriceEncoderApp: React.FC = () => {
     setShowProductList(true);
   };
 
-  // ฟังก์ชันรีเซ็ตฟอร์ม
   const resetForm = () => {
     setProductName("");
     setBuyingPrice("");
@@ -185,7 +185,6 @@ const PriceEncoderApp: React.FC = () => {
     setDecodedPrice("");
   };
 
-  // ฟังก์ชันเลือกดูสินค้า
   const selectProduct = (product: Product, resetBargain: boolean = true) => {
     const currentBargainPrice = bargainPrice;
     resetForm();
@@ -203,7 +202,6 @@ const PriceEncoderApp: React.FC = () => {
     }
   };
 
-  // ฟังก์ชันลบสินค้า
   const removeProduct = (id: string) => {
     setProducts(products.filter((p) => p.id !== id));
     if (currentProduct && currentProduct.id === id) {
@@ -767,12 +765,13 @@ const PriceEncoderApp: React.FC = () => {
                     <div className="flex space-x-2">
                       <input
                         type="number"
-                        value={
-                          offerProductId === product.id ? bargainPrice : ""
-                        }
+                        value={productOffers[product.id] || ""}
                         onChange={(e) => {
                           setOfferProductId(product.id);
-                          setBargainPrice(e.target.value);
+                          setProductOffers({
+                            ...productOffers,
+                            [product.id]: e.target.value,
+                          });
                           setIsBargainAcceptable(null);
                         }}
                         className="flex-1 px-3 py-2 border rounded text-black"
@@ -786,7 +785,14 @@ const PriceEncoderApp: React.FC = () => {
                           setCurrentProduct(product);
                           setBuyingPrice(product.buyingPrice);
                           setSellingPrice(product.sellingPrice);
-                          checkBargain();
+                          const offerPrice = productOffers[product.id];
+                          if (offerPrice) {
+                            setBargainPrice(offerPrice);
+                            checkBargain();
+                          } else {
+                            setBargainPrice("");
+                            setIsBargainAcceptable(null);
+                          }
                         }}
                         className="px-4 py-2 bg-orange-500 text-white text-[14px] rounded hover:bg-orange-600"
                       >
