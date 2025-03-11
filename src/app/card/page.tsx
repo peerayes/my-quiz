@@ -221,7 +221,12 @@ export default function CardPage() {
           <div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 mb-8">
               {deck.map((card, index) => (
-                <Card key={index} value={card} index={index} />
+                <Card
+                  key={index}
+                  value={card}
+                  index={index}
+                  isRevealed={true}
+                />
               ))}
             </div>
 
