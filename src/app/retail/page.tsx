@@ -60,16 +60,6 @@ const PriceEncoderApp: React.FC = () => {
     setDecodedPrice("");
   };
 
-  const checkBargain = (): void => {
-    const buyingVal = parseFloat(buyingPrice);
-    const bargainVal = parseFloat(bargainPrice);
-    if (isNaN(buyingVal) || isNaN(bargainVal)) {
-      setIsBargainAcceptable(null);
-      return;
-    }
-    setIsBargainAcceptable(bargainVal >= buyingVal);
-  };
-
   const toggleView = (): void => {
     if (!showAdminPanel) {
       setShowAdminPanel(true);
