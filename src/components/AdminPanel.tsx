@@ -370,6 +370,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                 value={productName}
                 onChange={(e) => setProductName(e.target.value)}
                 className="w-full px-3 py-2 border rounded text-black"
+                placeholder="เพิ่มชื่อสินค้า"
                 required
               />
             </div>
@@ -383,6 +384,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                 value={buyingPrice}
                 onChange={(e) => setBuyingPrice(e.target.value)}
                 className="w-full px-3 py-2 border rounded text-black"
+                placeholder="ระบุราคาต้นทุน"
                 required
                 min="0"
                 step="1"
